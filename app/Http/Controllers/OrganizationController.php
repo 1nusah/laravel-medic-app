@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organizations;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -58,7 +58,7 @@ class OrganizationController extends Controller
 
         Log::info('Creating new organization');
         $id = Str::uuid()->toString();
-        $organizsation = Organizations::create([
+        $organizsation = Organization::create([
             'id' => $id,
             'name' => $request->get('name'),
             'phoneNumber' => $request->get('phoneNumber'),

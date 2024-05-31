@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 
 
-class Organizations extends Model
+class Organization extends Model
 {
     use HasFactory, Notifiable,HasApiTokens, HasUuids,SoftDeletes;
 
