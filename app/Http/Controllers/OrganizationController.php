@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
-
 class OrganizationController extends Controller
 {
 
@@ -55,10 +54,9 @@ class OrganizationController extends Controller
         }
 
 
-
         Log::info('Creating new organization');
         $id = Str::uuid()->toString();
-        $organizsation = Organization::create([
+        $organization = Organization::create([
             'id' => $id,
             'name' => $request->get('name'),
             'phoneNumber' => $request->get('phoneNumber'),
@@ -66,12 +64,10 @@ class OrganizationController extends Controller
             'ghanaPostAddress' => $request->get('ghanaPostAddress'),
         ]);
 
-        $organizsation->save();
-
 
         return response()->json([
             'message' => 'Successfully created organization',
-            'id' => $id
+            'id' => $organization->id
         ]);
     }
 }

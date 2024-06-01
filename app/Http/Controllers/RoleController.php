@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 class RoleController extends Controller
 {
     protected $roles_table_name = 'roles';
+
     public function findRoles()
     {
         $roles = DB::table($this->roles_table_name)->get();
@@ -61,11 +62,10 @@ class RoleController extends Controller
             'name' => Str::upper($request->get('name')),
             'id' => $newRoleId
         ]);
-        $newRole->save();
 
         return response()->json([
             'message' => 'Resource created successfully',
-            'id' => $newRoleId
+            'id' => $newRole->id
         ]);
     }
 }

@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
- use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
- use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
-
 class Organization extends Model
 {
-    use HasFactory, Notifiable,HasApiTokens, HasUuids,SoftDeletes;
+    use HasFactory, Notifiable, HasApiTokens, HasUuids, SoftDeletes;
 
 
-        /***
+    /***
      * @var string
      */
-    protected $keyType ='string';
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +33,7 @@ class Organization extends Model
         'phoneNumber'
     ];
 
-/**
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -43,5 +43,11 @@ class Organization extends Model
         return [
             'email_verified_at' => 'datetime',
         ];
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->BelongsToMany(User::class);
+
     }
 }

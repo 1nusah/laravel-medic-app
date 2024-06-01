@@ -10,15 +10,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,HasApiTokens, HasUuids,SoftDeletes;
+    use HasFactory, Notifiable, HasApiTokens, HasUuids, SoftDeletes;
 
     /***
      * @var string
      */
-    protected $keyType ='string';
+    protected $keyType = 'string';
 
 
     /**
@@ -30,7 +31,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'roles'
     ];
 
     /**
@@ -54,5 +55,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+
+    }
+
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class, 'organization_user');
     }
 }
