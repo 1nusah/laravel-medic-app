@@ -55,9 +55,7 @@ class OrganizationController extends Controller
 
 
         Log::info('Creating new organization');
-        $id = Str::uuid()->toString();
         $organization = Organization::create([
-            'id' => $id,
             'name' => $request->get('name'),
             'phoneNumber' => $request->get('phoneNumber'),
             'email' => $request->get('email'),

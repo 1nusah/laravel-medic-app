@@ -46,8 +46,9 @@ class RoleController extends Controller
 
     public function create(Request $request)
     {
+   
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'min:3', 'max:30']
+            'name' => ['required', 'min:3', 'max:30', 'unique:roles'],
         ]);
 
         if ($validator->fails()) {
@@ -57,10 +58,8 @@ class RoleController extends Controller
             ], 422);
         }
 
-        $newRoleId = Str::uuid()->toString();
         $newRole = Role::create([
-            'name' => Str::upper($request->get('name')),
-            'id' => $newRoleId
+            'name' => $request->get('name')
         ]);
 
         return response()->json([

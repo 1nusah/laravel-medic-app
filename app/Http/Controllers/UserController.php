@@ -44,7 +44,7 @@ class UserController extends Controller
             'roles' => 'required|array',
             'roles[*]' => 'exists:roles,id|distinct',
             'organizations' => 'nullable|array',
-            'organizations.*' => 'exists:organizations,id|distinct',
+            'organizations.*' => 'distinct|exists:organizations,id',
 
         ]);
 
@@ -58,14 +58,12 @@ class UserController extends Controller
 
         Log::info('creating  new user');
 
-        $id = Str::uuid()->toString();
         $userRoles = $request->get('roles');
         $userOrganizations = $request->get('organizations');
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'id' => $id
         ]);
 
         Log::info('created new user');
