@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,9 @@ class RoleController extends Controller
 
     public function findRoles()
     {
-        $roles = DB::table($this->roles_table_name)->get();
+        $roles = Role::all();
 
-        return response()->json($roles);
+        return RoleResource::collection($roles);
     }
 
     public function findRole(string $id)
@@ -46,7 +47,7 @@ class RoleController extends Controller
 
     public function create(Request $request)
     {
-   
+
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'min:3', 'max:30', 'unique:roles'],
         ]);

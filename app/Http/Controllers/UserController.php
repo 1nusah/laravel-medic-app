@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -36,7 +35,6 @@ class UserController extends Controller
     {
         Log::info('Validating input');
 
-        Log::info($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|unique:users|email',
