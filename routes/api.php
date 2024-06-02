@@ -34,7 +34,8 @@ Route::prefix('roles')->group(function () {
 Route::prefix('appointments')->group(function () {
     Route::post('/', [AppointmentController::class, 'create']);
     Route::get('/', [AppointmentController::class, 'index']);
-    Route::patch('/{id}/status', [AppointmentController::class, 'updateStatus']);
+    Route::patch('/{id}/status', [AppointmentController::class, 'updateAppointmentStatus']);
     Route::patch('/{id}/assign-doctor', [AppointmentController::class, 'assignDoctor']);
-    Route::put('/{id}', [AppointmentController::class, 'completeAppointment']);
+    Route::put('/{id}', [AppointmentController::class, 'updateAppointmentDetails']);
+    Route::get('/{id}', [AppointmentController::class, 'getAppointmentDetails']);
 });

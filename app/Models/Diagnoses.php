@@ -25,10 +25,10 @@ class Diagnoses extends Model
         'notes'
     ];
 
-//    public function appointment(): BelongsTo
-//    {
-//        return $this->belongsTo(Appointment::class);
-//    }
+    public function appointment(): BelongsTo
+    {
+        return $this->belongsTo(Appointment::class);
+    }
 
 
 }

@@ -37,8 +37,7 @@ class Appointment extends Model
 
     public function patient(): BelongsTo
     {
-        $path = $this->belongsTo(User::class, 'patient_id', 'id');
-        echo($path);
+
         return $this->belongsTo(User::class, 'patient_id', 'id');
     }
 
@@ -47,9 +46,9 @@ class Appointment extends Model
         return $this->belongsTo(User::class, 'doctor_id', 'id');
     }
 
-//    public function diagnoses(): HasMany
-//    {
-//        return $this->hasMany(Diagnoses::class);
-//    }
+    public function diagnoses(): HasMany
+    {
+        return $this->hasMany(Diagnoses::class)->withDefault();
+    }
 
 }
