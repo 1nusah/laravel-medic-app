@@ -11,15 +11,22 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('organizations', function (Blueprint $table) {
-            $table->id();
+            $table->string('id');
             $table->string('name');
-            $table->string('phoneNumber');
-            $table->string('email')->nullable();
+            $table->string('phoneNumber')->unique();
+            $table->string('email')->unique();
             $table->string('ghanaPostAddress');
             $table->softDeletes('deleted_at');
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();
 
+        });
+
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 

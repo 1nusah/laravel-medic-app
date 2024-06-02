@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -19,9 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->enum('role',['ADMIN','DOCTOR','PATIENT'])->nullable();
             $table->softDeletes('deleted_at');
-            $table->foreignId('organization_id')->index();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
