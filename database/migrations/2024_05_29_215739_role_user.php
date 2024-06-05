@@ -12,11 +12,13 @@ return new class extends Migration {
     {
         Schema::create('role_user', function (Blueprint $table) {
 
-            $table->id();
+            $table->uuid('id',)->primary();
             $table->timestamps();
             $table->softDeletes('deleted_at');
-            $table->string('user_id');
-            $table->string('role_id');
+            $table->foreignUuid('user_id')->constrained('users', )->cascadeOnDelete()
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('role_id')->constrained('roles')->cascadeOnDelete()
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
