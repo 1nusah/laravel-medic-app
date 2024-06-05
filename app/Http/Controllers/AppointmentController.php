@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AppointmentResource;
 use App\Http\Resources\UserResource;
 use App\Models\Appointment;
+use App\Models\Diagnosis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -12,26 +14,26 @@ use Illuminate\Validation\Rule;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function findAppointments()
     {
         $appointments = Appointment::all();
-        return response()->json([
-            'data' => $appointments
-        ]);
+        return AppointmentResource::collection($appointments);
     }
 
-    public function getAppointmentDetails(string $id)
+    public function getAppointmentDetails(string $appointmentId)
     {
-        $appointment = Appointment::findOrFail($id)->load('patient')
-            ->load('doctor');
+        $appointment = Appointment::findOrFail($appointmentId)
+            ->load('patient')
+            ->load('doctor')
+            ->load('diagnoses');
         return response()->json([
             'data' => $appointment
         ]);
     }
 
-    public function updateAppointmentDetails(Request $request, string $id)
+    public function updateAppointmentDetails(Request $request, string $appointmentId)
     {
-        $request->merge(['id', $id]);
+        $request->merge(['id', $appointmentId]);
         $validator = Validator::make($request->all(), [
             'id' => 'required|uuid|exists:appointments,id',
             'name' => 'sometimes|nullable|string',
@@ -51,7 +53,7 @@ class AppointmentController extends Controller
             ], 422);
         };
 
-        Appointment::where('id', $id)->update(
+        Appointment::where('id', $appointmentId)->update(
             $request->only(['name', 'patient_id', 'doctor_id', 'appointment_date', 'status']));
 
         return response()->json([
@@ -60,7 +62,7 @@ class AppointmentController extends Controller
 
     }
 
-    public function create(Request $request)
+    public function createNewAppointment(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|nullable|string',
@@ -93,10 +95,10 @@ class AppointmentController extends Controller
     }
 
 
-    public function assignDoctor(Request $request, string $id)
+    public function assignDoctor(Request $request, string $appointmentId)
     {
 
-        $request->merge(['id' => $id]);
+        $request->merge(['id' => $appointmentId]);
         $validator = Validator::make($request->all(), [
             'doctor_id' => 'required|uuid|exists:users,id',
             'id' => 'required|uuid|exists:appointments,id'
@@ -109,7 +111,7 @@ class AppointmentController extends Controller
             ], 422);
         }
 
-        Appointment::where('id', $id)->update([
+        Appointment::where('id', $appointmentId)->update([
             'doctor_id' => $request->get('doctor_id'),
             'status' => AppointmentStatus::SCHEDULED
         ]);
@@ -121,9 +123,9 @@ class AppointmentController extends Controller
     }
 
 
-    public function updateAppointmentStatus(Request $request, string $id)
+    public function updateAppointmentStatus(Request $request, string $appointmentId)
     {
-        $request->merge(['id' => $id]);
+        $request->merge(['id' => $appointmentId]);
         $validator = Validator::make($request->all(), [
             'status' => [Rule::enum(AppointmentStatus::class)->only([
                 AppointmentStatus::ONGOING,
@@ -139,7 +141,7 @@ class AppointmentController extends Controller
             ], 422);
         };
 
-        Appointment::where('id', $id)->update([
+        Appointment::where('id', $appointmentId)->update([
             'status' => $request->get('status')
 
         ]);

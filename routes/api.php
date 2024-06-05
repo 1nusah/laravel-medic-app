@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Request;
 
 
 Route::prefix('users')->group(function () {
@@ -32,10 +32,19 @@ Route::prefix('roles')->group(function () {
 });
 
 Route::prefix('appointments')->group(function () {
-    Route::post('/', [AppointmentController::class, 'create']);
-    Route::get('/', [AppointmentController::class, 'index']);
-    Route::patch('/{id}/status', [AppointmentController::class, 'updateAppointmentStatus']);
-    Route::patch('/{id}/assign-doctor', [AppointmentController::class, 'assignDoctor']);
-    Route::put('/{id}', [AppointmentController::class, 'updateAppointmentDetails']);
-    Route::get('/{id}', [AppointmentController::class, 'getAppointmentDetails']);
+    Route::post('/', [AppointmentController::class, 'createNewAppointment']);
+    Route::get('/', [AppointmentController::class, 'findAppointments']);
+    Route::patch('/{appointmentId}/status', [AppointmentController::class, 'updateAppointmentStatus']);
+    Route::patch('/{appointmentId}/assign-doctor', [AppointmentController::class, 'assignDoctor']);
+    Route::put('/{appointmentId}', [AppointmentController::class, 'updateAppointmentDetails']);
+    Route::get('/{appointmentId}', [AppointmentController::class, 'getAppointmentDetails']);
 });
+
+Route::prefix('diagnoses')->group(function () {
+    Route::post('/', [DiagnosisController::class, 'createDiagnosis']);
+    Route::get('/', [DiagnosisController::class, 'findDiagnosis']);
+    Route::delete('/{diagnosisId}', [DiagnosisController::class, 'deleteDiagnosis']);
+    Route::put('/{diagnosisId}', [DiagnosisController::class, 'updateDiagnosis']);
+});
+
+

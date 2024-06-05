@@ -11,16 +11,14 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('diagnoses', function (Blueprint $table) {
-            $table->string('id',)->primary();
+            $table->uuid('id',)->primary();
             $table->timestamps();
             $table->softDeletes('deleted_at');
             $table->string('symptoms');
-            $table->string('tests')->nullable();
-            $table->json('prescription');
+            $table->string('prescription');
             $table->string('notes')->nullable();
-            $table->string('appointment_id');
-
-//            change this to have many tests/tests results as well as file keys
+            $table->foreignUuid('appointment_id')->constrained()
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

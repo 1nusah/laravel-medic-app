@@ -11,12 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('appointments', function (Blueprint $table) {
-            $table->string('id');
+            $table->uuid('id',)->primary();
             $table->timestamps();
             $table->softDeletes('deleted_at');
             $table->string('name')->nullable();
-            $table->string('patient_id');
-            $table->string('doctor_id')->nullable();
+            $table->foreignUuid('patient_id')->constrained('users', 'id')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('doctor_id')->constrained('users', 'id')->onUpdate('cascade')->onDelete('cascade')->nullable();
             $table->string('status')->nullable();
             $table->dateTime('appointment_date');
         });
