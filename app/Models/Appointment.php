@@ -11,44 +11,44 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Appointment extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+  use HasFactory, HasUuids, SoftDeletes;
 
 
-    protected $keyType = 'string';
+  protected $keyType = 'string';
 
-    /**
-     * fillable columns
-     * @var string[]
-     */
-    protected $fillable = [
-        'name',
-        'doctor_id',
-        'patient_id',
-        'appointment_date',
-    ];
+  /**
+   * fillable columns
+   * @var string[]
+   */
+  protected $fillable = [
+    'name',
+    'doctor_id',
+    'patient_id',
+    'appointment_date',
+  ];
 
-    /**
-     * model default values
-     */
+  /**
+   * model default values
+   */
 
-    protected $attributes = [
-        'status' => AppointmentStatus::SCHEDULED
-    ];
+  protected $attributes = [
+    'status' => AppointmentStatus::SCHEDULED
+  ];
 
-    public function patient(): BelongsTo
-    {
+  public function patient(): BelongsTo
+  {
 
-        return $this->belongsTo(User::class, 'patient_id', 'id');
-    }
+    return $this->belongsTo(User::class, 'patient_id', 'id');
+  }
 
-    public function doctor(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'doctor_id', 'id');
-    }
+  public function doctor(): BelongsTo
+  {
+    return $this->belongsTo(User::class, 'doctor_id', 'id');
+  }
 
-    public function diagnoses(): HasMany
-    {
-        return $this->hasMany(Diagnoses::class)->withDefault();
-    }
+  public function diagnoses(): HasMany
+  {
+    return $this->hasMany(Diagnoses::class)->withDefault();
+  }
 
 }

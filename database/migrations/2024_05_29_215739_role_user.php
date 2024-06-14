@@ -5,26 +5,26 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('role_user', function (Blueprint $table) {
+  /**
+   * Run the migrations.
+   */
+  public function up(): void
+  {
+    Schema::create('role_user', function (Blueprint $table) {
 
-            $table->id();
-            $table->timestamps();
-            $table->softDeletes('deleted_at');
-            $table->string('user_id');
-            $table->string('role_id');
-        });
-    }
+      $table->uuid('id')->primary();
+      $table->timestamps();
+      $table->softDeletes('deleted_at');
+      $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+      $table->foreignUuid('role_id')->constrained('roles')->cascadeOnDelete()->cascadeOnUpdate();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        //
-    }
+  /**
+   * Reverse the migrations.
+   */
+  public function down(): void
+  {
+    Schema::dropIfExists('role_user');
+  }
 };
